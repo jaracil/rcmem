@@ -90,7 +90,9 @@ void rcmem_unref(void *p){
 		goto ex;
 	}
 	if (m->des != NULL){
+		pthread_mutex_unlock(&m->mux);
 		m->des(p);
+		pthread_mutex_lock(&m->mux);
 		if (m->count > 0) {  // incremented ref counter in destructor ???
 			goto ex;
 		}
